@@ -1,0 +1,13 @@
+use('CAPRIUS_DB');
+db.CAPRIUS_TASKS_COLL.findOne({
+    created_by: ObjectId("61e6f1349f9193a7f5c7a28f")
+});
+
+// db.CAPRIUS_TASKS_COLL.aggregate({
+//     $lookup:{
+//        from :"CAPRIUS_AUTH_COLL",
+//        localField:"created_by",
+//        foreignField:"created_by",
+//        as:"created_by_user" 
+//     }
+// })

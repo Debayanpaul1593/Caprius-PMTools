@@ -1,0 +1,17 @@
+use('CAPRIUS_DB');
+db.createCollection('CAPRIUS_TASKS_COLL');
+db.CAPRIUS_TASKS_COLL.insertOne({
+      id: "3816",
+      priority: "1",
+      sprint: "Sprint1",
+      name: "Create a page for taskslist",
+      description:"This and this",
+      created_by: ObjectId("61e6f1349f9193a7f5c7a28f"),
+      assigned_to: "Noah",
+      finished_by: "",
+      est: "8",
+      cost: "",
+      left: "",
+      deadline: "17-01-2022",
+      status: "Waiting",
+    });

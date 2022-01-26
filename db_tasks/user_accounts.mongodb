@@ -1,0 +1,16 @@
+use('CAPRIUS_DB');
+
+const collection = 'CAPRIUS_AUTH_COLL';
+
+db.CAPRIUS_AUTH_COLL.insertMany([
+{	email:'debayan.sec@gmail.com',
+	password:'1234',
+	role:'admin',
+	status:'active',
+},
+{	email:'debayan.p@mantralabsglobal.com',
+	password:'1234',
+	role:'admin',
+	status:'active',
+}
+]);

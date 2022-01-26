@@ -1,0 +1,11 @@
+use('CAPRIUS_DB');
+db.CAPRIUS_AUTH_COLL.find({
+    email:"debayan.advisor@gmail.com"
+}, {password:1}).limit(1);
+
+db.CAPRIUS_AUTH_COLL.updateOne(
+    {email:"debayan.sec@gmail.com"},
+    {$set:{email:"debayan.advisor@gmail.com"}}
+);
+
+
