@@ -3,8 +3,8 @@ const dbo = require("./db");
 const authRoutes = express.Router();
 function middlewareFunction(req, res, next) {
   console.log("executed search for users");
-  res.status(401).send('Unauthorised!');
-  //next();
+  //res.status(401).send('Unauthorised!');
+  next();
 }
 authRoutes.route("/users").get(async function (req, res, next) {
   dbo
