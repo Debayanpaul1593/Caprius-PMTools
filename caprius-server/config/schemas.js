@@ -11,9 +11,18 @@ const userSchema = new Schema({
   username: String,
   hash: String,
   salt: String,
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: new Date(),
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 const Blog = connection.model("blog", blogSchema);
 const User = connection.model("user", userSchema);
-module.exports.Blog = Blog;
-module.exports.User = User;
+//module.exports.Blog = Blog;
+module.exports = User;

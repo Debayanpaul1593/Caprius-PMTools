@@ -26,12 +26,6 @@ const dbOptions = {
 };
 
 /**
- * --------------CONFIGURE PASSPORT--------
- */
-require('./config/passport');
-app.use(passport.initialize());
-
-/**
  * --------------CREATE MONGOOSE SESSION--------
  */
 const sessionStore = MongoStore.create({
@@ -52,6 +46,14 @@ app.use(
     cookie: { maxAge: 60 * 1000 },
   })
 );
+
+/**
+ * --------------CONFIGURE PASSPORT--------
+ */
+require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use("/api", authRoutes);
 app.get("/", (req, res) => {

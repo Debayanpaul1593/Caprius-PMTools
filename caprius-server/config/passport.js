@@ -1,7 +1,8 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const connection = require("./database");
+const { validatePassword } = require("../lib/passwordUtils");
 const User = require("./schemas");
-const validatePassword = require("../lib/passwordUtils");
 
 function verifyCallback(username, password, done) {
   User.findOne({ username: username })
