@@ -4,7 +4,7 @@ const authRoutes = express.Router();
 function middlewareFunction(req, res, next) {
   console.log("executed search for users");
   //res.status(401).send('Unauthorised!');
-  next();
+  next(req, res, next);
 }
 authRoutes.route("/users").get(async function (req, res, next) {
   dbo
@@ -21,9 +21,13 @@ authRoutes.route("/users").get(async function (req, res, next) {
     });
 });
 
-authRoutes.route("/register").post((req, res, next) => {});
+authRoutes.route("/register").post((req, res, next) => {
+  console.log("Caught req", req);
+});
 
-authRoutes.route("/login").post((req, res, next) => {});
+authRoutes.route("/login").post((req, res, next) => {
+  console.log("Caught req", req);
+});
 
 authRoutes.route("/register").get((req, res, next) => {
   res.sendFile(__dirname + "/register.html");

@@ -5,16 +5,18 @@ const session = require("express-session");
 const dbo = require("./db");
 const { authRoutes, middlewareFunction } = require("./authRoutes");
 const Blog = require("./config/schemas");
-
-//create mongostore for session
+const passport = require("passport");
 const MongoStore = require("connect-mongo");
 
-//create the express application
+
+
+/**
+ * -------------APPLICATION CONFIGURATION--------
+ */
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const port = 3000;
 require("dotenv").config();
 
 //connect to db using mongoose
@@ -23,21 +25,24 @@ const dbOptions = {
   useUnifiedTopology: true,
 };
 
-const connection = mongoose.createConnection(process.env.DB_STRING, dbOptions);
-//mongoose.connect(dbstring, (_) => console.log("connected to mongodb"));
-// dbo.connectToServer((res) => {
-//   console.log(">>", res);
-// });
+/**
+ * --------------CONFIGURE PASSPORT--------
+ */
+require('./config/passport');
+app.use(passport.initialize());
 
-//create session store
+/**
+ * --------------CREATE MONGOOSE SESSION--------
+ */
 const sessionStore = MongoStore.create({
   mongoUrl: process.env.DB_STRING,
-  //db: connection.db,
   mongoOptions: dbOptions,
   collectionName: "sessions",
 });
 
-//use session store with app
+/**
+ * --------------CONFIGURE SESSION STORE--------
+ */
 app.use(
   session({
     secret: process.env.SECRET_KEY,
@@ -48,15 +53,13 @@ app.use(
   })
 );
 
-app.use("/api", middlewareFunction, authRoutes);
+app.use("/api", authRoutes);
 app.get("/", (req, res) => {
-  //console.log(req.session);
   if (req.session.viewCount) {
     req.session.viewCount = req.session.viewCount + 1;
   } else {
     req.session.viewCount = 1;
   }
-  //res.send("<h1>Hello World!(Sessions)</h1>");
   res.send(`You have visited this page ${req.session.viewCount} times`);
 });
 
@@ -72,6 +75,9 @@ app.post("/", (req, res) => {
   });
 });
 
-app.listen(port, () => {
+/**
+ * -----------------START SERVER----------------
+ */
+app.listen(process.env.PORT || 3000, () => {
   console.log("Example app listening on port 3000");
 });
