@@ -20,4 +20,16 @@ authRoutes.route("/users").get(async function (req, res, next) {
       }
     });
 });
+
+authRoutes.route("/register").post((req, res, next) => {});
+
+authRoutes.route("/login").post((req, res, next) => {});
+
+authRoutes.route("/register").get((req, res, next) => {
+  res.sendFile(__dirname + "/register.html");
+});
+
+authRoutes.route("/login").get((req, res, next) => {
+  res.sendFile(__dirname + "/login.html");
+});
 module.exports = { authRoutes, middlewareFunction };
