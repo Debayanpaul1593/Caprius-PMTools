@@ -3,12 +3,10 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const dbo = require("./db");
-const { authRoutes, middlewareFunction } = require("./authRoutes");
+const {authRoutes, middlewareFunction} = require("./authRoutes");
 const Blog = require("./config/schemas");
 const passport = require("passport");
 const MongoStore = require("connect-mongo");
-
-
 
 /**
  * -------------APPLICATION CONFIGURATION--------
@@ -50,9 +48,15 @@ app.use(
 /**
  * --------------CONFIGURE PASSPORT--------
  */
-require('./config/passport');
+require("./config/passport");
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.user);
+  next();
+});
+
 
 
 app.use("/api", authRoutes);

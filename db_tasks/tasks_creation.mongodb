@@ -1,5 +1,6 @@
 use('CAPRIUS_DB');
 db.createCollection('CAPRIUS_TASKS_COLL');
+
 db.CAPRIUS_TASKS_COLL.insertOne({
       id: "3816",
       priority: "1",

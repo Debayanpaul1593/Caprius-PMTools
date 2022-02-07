@@ -20,9 +20,10 @@ const userSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  role: String,
 });
 
 const Blog = connection.model("blog", blogSchema);
 const User = connection.model("user", userSchema);
 //module.exports.Blog = Blog;
-module.exports = User;
+module.exports.User = User;

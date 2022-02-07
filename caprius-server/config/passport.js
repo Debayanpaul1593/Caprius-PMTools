@@ -2,7 +2,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const connection = require("./database");
 const { validatePassword } = require("../lib/passwordUtils");
-const User = require("./schemas");
+const {User} = require("./schemas");
 
 function verifyCallback(username, password, done) {
   User.findOne({ username: username })
@@ -27,10 +27,18 @@ function verifyCallback(username, password, done) {
  */
 passport.use(new LocalStrategy(verifyCallback));
 
+/**
+ * will attach passport: { user: [user.id]} to session object
+ */
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
+
+/**
+ * will check for a user based on session userId and
+ * return user object on accessing session.user
+ */
 passport.deserializeUser((userId, done) => {
   User.findById(userId)
     .then((user) => {

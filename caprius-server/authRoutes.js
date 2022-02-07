@@ -1,8 +1,10 @@
 const express = require("express");
 const passport = require("passport");
-const { User } = require("./config/schemas");
+const {User} = require("./config/schemas");
 const dbo = require("./db");
 const { genPassword } = require("./lib/passwordUtils");
+const isAuth = require("./routes/authMiddleware").isAuth;
+const isAdmin = require("./routes/authMiddleware").isAdmin;
 const authRoutes = express.Router();
 function middlewareFunction(req, res, next) {
   console.log("executed search for users");
@@ -31,6 +33,7 @@ authRoutes.route("/register").post((req, res, next) => {
     username: req.body.username,
     salt,
     hash,
+    role: "admin",
   });
   user.save().then((user) => console.log("Created user", user));
   res.redirect("/api/login");
@@ -51,11 +54,24 @@ authRoutes.route("/login").get((req, res, next) => {
   res.sendFile(__dirname + "/login.html");
 });
 
-authRoutes.route("/login-success").get((req, res, next) => {
+authRoutes.route("/login-success").get(isAuth, (req, res, next) => {
   res.sendFile(__dirname + "/login-success.html");
 });
 
 authRoutes.route("/login-failure").get((req, res, next) => {
   res.sendFile(__dirname + "/login-failure.html");
+});
+
+authRoutes.route("/logout").get((req, res) => {
+  req.logout();
+  res.send("<h2>You have been logged out!</h2>");
+});
+
+authRoutes.route("/dashboard").get(isAuth, (req, res) => {
+  res.status(200).send("<h2>Welcome to dashboard</h2>");
+});
+
+authRoutes.route("/admin-dashboard").get(isAuth, isAdmin, (req, res) => {
+  res.status(200).send("<h2>Welcome to Admin dashboard</h2>");
 });
 module.exports = { authRoutes, middlewareFunction };
