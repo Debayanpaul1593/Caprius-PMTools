@@ -1,4 +1,7 @@
 const crypto = require("crypto");
+const jsonwebtoken = require("jsonwebtoken");
+const fs = require('fs');
+const path = require('path');
 /**
  * 'Password Based Key Derivation Function' is a password hashing technique
  * it applies a pseudorandom function such as HMAC and applies it to the 
@@ -24,6 +27,8 @@ function validatePassword(password, hash, salt) {
     .toString("hex");
   return hashVerify === hash;
 }
+
+
 function genPassword(password) {
   const salt = crypto.randomBytes(32).toString("hex");
   const hash = crypto
@@ -35,5 +40,29 @@ function genPassword(password) {
   };
 }
 
+
+function getPrivKey(){
+  const pathToKey = path.join(__dirname, '../cryptography', 'id_rsa_priv.pem');
+  const key = fs.readFileSync(pathToKey, 'utf8');
+  return key;
+}
+
+
+function issueJWT(user){
+  const _id = user._id;
+  const PRIV_KEY = getPrivKey();
+  const expiresIn = '1d';
+  const payload = {
+    sub: _id,
+    iat: Date.now()
+  }
+  const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, {expiresIn: expiresIn, algorithm:'RS256'});
+  return {
+    token: 'Bearer ' + signedToken,
+    expires: expiresIn
+  }
+}
+
 module.exports.validatePassword = validatePassword;
 module.exports.genPassword = genPassword;
+module.exports.issueJWT = issueJWT;
