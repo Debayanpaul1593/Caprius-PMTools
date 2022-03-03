@@ -1,4 +1,4 @@
-const {ObjectId} = require("mongodb");
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const connection = require("./database");
@@ -24,29 +24,34 @@ const userSchema = new Schema({
   role: String,
 });
 
-
 const taskSchema = new Schema({
   bugId: {
     type: Number,
-    default:0,
+    default: 0,
   },
-  priority:String,
-  sprint:String,
-  name:String,
-  description:String,
-  createdBy:{
-    type:mongoose.Types.ObjectId,
-    required:true
+  priority: String,
+  sprint: String,
+  name: String,
+  description: String,
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
   },
-  assignedTo: mongoose.Types.ObjectId,
-  finishedBy: mongoose.Types.ObjectId,
-  est:String,
-  cost:String,
-  left:String,
+  assignedTo: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  finishedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+  est: String,
+  cost: String,
+  left: String,
   deadline: String,
-  status:{
+  status: {
     type: String,
-    default:'Waiting'
+    default: "Waiting",
   },
   createdAt: {
     type: Date,

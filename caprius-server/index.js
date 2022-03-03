@@ -27,6 +27,7 @@ const dbOptions = {
  * --------------CREATE MONGOOSE SESSION--------
  */
 const sessionStore = MongoStore.create({
+  // eslint-disable-next-line no-undef
   mongoUrl: process.env.DB_STRING,
   mongoOptions: dbOptions,
   collectionName: "sessions",
@@ -58,7 +59,7 @@ app.use((req, res, next) => {
 });
 
 
-
+let f = undefined;
 app.use("/api", authRoutes);
 app.get("/", (req, res) => {
   if (req.session.viewCount) {
@@ -84,6 +85,6 @@ app.post("/", (req, res) => {
 /**
  * -----------------START SERVER----------------
  */
-app.listen(process.env.PORT || 3000, () => {
+app.listen(5000, () => {
   console.log("Example app listening on port 3000");
 });
